@@ -1,7 +1,7 @@
 /*  Program: Serial_Power_Supply_Mock
-Simulates a Power Solutions TF800 or Helios HPSAE programable power supply
-Returns a result from "*IDN?"
-The set "SET_VOLTAGE:" comand will set the DAC output on pin #define DAC1 25
+  Simulates a Power Solutions TF800 or Helios HPSAE programable power supply
+  Returns a result from "*IDN?"
+  The set "SET_VOLTAGE:" comand will set the DAC output on pin #define DAC1 25
 
 */
 
@@ -27,6 +27,59 @@ int DAC1_Value = 0; //Initial value of DAC1
 
 //response = "TF800,Manufacturer,Model,Version,SerialNumber";
 
+class Flasher
+{
+    // Class Member Variables
+    // These are initialized at startup
+    int ledPin;      // the number of the LED pin
+    long OnTime;     // milliseconds of on-time
+    long OffTime;    // milliseconds of off-time
+
+    // These maintain the current state
+    int ledState;                 // ledState used to set the LED
+    unsigned long previousMillis;   // will store last time LED was updated
+
+    // Constructor - creates a Flasher
+    // and initializes the member variables and state
+  public:
+    Flasher(int pin, long on, long off)
+    {
+      ledPin = pin;
+      pinMode(ledPin, OUTPUT);
+
+      OnTime = on;
+      OffTime = off;
+
+      ledState = LOW;
+      previousMillis = 0;
+    }
+
+    void Update()
+    {
+      // check to see if it's time to change the state of the LED
+      unsigned long currentMillis = millis();
+
+      if ((ledState == HIGH) && (currentMillis - previousMillis >= OnTime))
+      {
+        ledState = LOW;  // Turn it off
+        previousMillis = currentMillis;  // Remember the time
+        digitalWrite(ledPin, ledState);  // Update the actual LED
+      }
+      else if ((ledState == LOW) && (currentMillis - previousMillis >= OffTime))
+      {
+        ledState = HIGH;  // turn it on
+        previousMillis = currentMillis;   // Remember the time
+        digitalWrite(ledPin, ledState);   // Update the actual LED
+      }
+    }
+};
+
+// Flasher led1(12, 100, 400);  //Pins for UNO
+// Flasher led2(13, 350, 350);
+
+Flasher led1(2, 100, 400);      //Pins for ESP32
+Flasher led2(3, 350, 350);
+
 void setup() {
   Serial.begin(BAUD_RATE);
   SerialTF800.begin(BAUD_RATE, SERIAL_8N1, RX_PIN, TX_PIN);
@@ -43,6 +96,9 @@ void loop() {
 
     handleCommand(command);
   }
+
+  led1.Update();
+  led2.Update();
 }
 
 void handleCommand(String command) {
