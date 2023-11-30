@@ -15,29 +15,29 @@ _Lifted from the HPSAE document_
 
  COMMAND DESCRIPTION from Communication Protocol in User's Manual(s)
   --------------------------------------------------  
-| Command | Description                            | Notes | Implimented |
-|---------|----------------------------------------|-------|-------------|
-| ADDS    | ADDS Device Addressing                 |       |             |
-| GLOB    | GLOB Global Power ON / OFF Control     |       |             |
-| POWER   | POWER Power ON / OFF / Query           |       |             |
-| GSV     | GSV Global control O/P voltage setting |       |             |
-| GSI     | GSI Global control O/P current setting |       |             |
-| GRPWR   | GRPWR 1 Global Power ON                |       |             |
-| GRPWR   | GRPWR 0 Global Power OFF               |       |             |
-| SV      | SV O/P Voltage Setting                 |       | - [ ]       |
-| SI      | SI O/P Current Setting                 |       | - [ ]       |
-| SV?     | SV? Voltage setting Query              |       | - [ ]       |
-| SI?     | SI? Current setting Query              |       | - [ ]       |
-| RV?     | RV? O/P Voltage Query                  |       | - [ ]       |
-| RI?     | RI? O/P Current Query                  |       | - [ ]       |
-| RT?     | RT? Temperature Query                  |       | - [ ]       |
-| REMS    | REMS Remote ON / OFF / Query           |       |             |
-| STUS    | STUS Device Status Query               |       |             |
-| INFO    | INFO Information Query                 |       |             |
-| RATE?   | RATE? Rate V/I Query                   |       |             |
-| DEVI?   | DEVI? Device Name Query                |       |             |
-| *IDN?   | *IDN? Identification Query             |       | - [ ]       |
-|         |                                        |       |             |
+| Command | Description                        | Notes | Implimented |
+|---------|------------------------------------|-------|-------------|
+| ADDS    | Device Addressing                  |       |             |
+| GLOB    | Global Power ON / OFF Control      |       |             |
+| POWER   | Power ON / OFF / Query             |       |             |
+| GSV     | Global control O/P voltage setting |       |             |
+| GSI     | Global control O/P current setting |       |             |
+| GRPWR   | GRPWR 1 Global Power ON            |       |             |
+| GRPWR   | GRPWR 0 Global Power OFF           |       |             |
+| SV nn.n | O/P Voltage Setting in Volts       |       | - [ ]       |
+| SI nn.n | O/P Current Setting in Amps        |       | - [ ]       |
+| SV?     | Voltage setting Query              |       | - [ ]       |
+| SI?     | Current setting Query              |       | - [ ]       |
+| RV?     | O/P Voltage Query                  |       | - [ ]       |
+| RI?     | O/P Current Query                  |       | - [ ]       |
+| RT?     | Temperature Query                  |       | - [ ]       |
+| REMS    | Remote ON / OFF / Query            |       |             |
+| STUS    | Device Status Query                |       |             |
+| INFO    | Information Query                  |       |             |
+| RATE?   | Rate V/I Query                     |       |             |
+| DEVI?   | Device Name Query                  |       |             |
+| *IDN?   | Identification Query               |       | - [ ]       |
+|         |                                    |       |             |
 
 
 ## Wokwi Simulation
