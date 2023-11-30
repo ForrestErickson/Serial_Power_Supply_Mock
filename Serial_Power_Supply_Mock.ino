@@ -45,6 +45,7 @@
   SV 6.5
   RV?
   SI 21.5
+  SI?
   RI?
   RT?
 
@@ -66,7 +67,11 @@ HardwareSerial SerialTF800(0);
 //#define TX_PIN 17
 //HardwareSerial SerialTF800(1);
 
-//Defin some hardware
+// Globals for the state
+float g_voltageSetting = 0.0;
+float g_currentLimitSetting = 0.0;
+
+//Define some hardware
 // dacWrite(DAC1, DAC1_Value);
 #define DAC1 25
 int DAC1_Value = 0; //Initial value of DAC1
@@ -171,8 +176,9 @@ void handleCommand(String command) {
 
   // Set Voltage, respond with an acknowledgment
   else if (trimmedUpperCommand.startsWith("SV ")) {
-    float voltageValue = trimmedUpperCommand.substring(12).toFloat();
+    float voltageValue = trimmedUpperCommand.substring(3).toFloat();
     // Process the voltage setting (replace with actual logic)
+    g_voltageSetting = voltageValue;
     Serial.println(voltageValue);
     response = "ACK_SET_VOLTAGE";
   }
@@ -185,10 +191,19 @@ void handleCommand(String command) {
 
   // Set Current, respond with an acknowledgment
   else if (trimmedUpperCommand.startsWith("SI ")) {
-    float currentValue = trimmedUpperCommand.substring(12).toFloat();
+    float currentValue = trimmedUpperCommand.substring(3).toFloat();
     // Process the current setting (replace with actual logic)
+    g_currentLimitSetting = currentValue;
     Serial.println(currentValue);
     response = "ACK_SET_CURRENT";
+  }
+
+  // Get Current set, respond with an acknowledgment
+  else if (trimmedUpperCommand.startsWith("SI?")) {
+    // Process the current setting (replace with actual logic)
+    float currentValue = g_currentLimitSetting;
+    Serial.println(currentValue);
+    response = "ACK_GET_CURRENT_SET";
   }
 
   // Read Current", respond with a current value
