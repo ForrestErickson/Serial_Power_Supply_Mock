@@ -37,6 +37,10 @@ _Lifted from the HPSAE document_
   IDN? Identification Query  
 
 
+## Wokwi Simulation
+https://wokwi.com/projects/382758334051087361
+![image](https://github.com/ForrestErickson/Serial_Power_Supply_Mock/assets/5836181/b2c73d48-b1da-4c08-a774-0d38d61859d2)
+
 ## License
 In general we intend to follow the [Public Invention Licensed Guidelines](https://github.com/PubInv/PubInv-License-Guidelines)  
 If you are starting your own project, please feel free to fork the license guidelines as a starting point if you like our license policy.
