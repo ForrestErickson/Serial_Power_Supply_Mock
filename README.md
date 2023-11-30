@@ -13,28 +13,31 @@ To have a mock supply where a tester can simulate faults such as the fan failing
 ## Target Commands
 _Lifted from the HPSAE document_
 
- COMMAND DESCRIPTION from Communication protocol User's Manual
+ COMMAND DESCRIPTION from Communication Protocol in User's Manual(s)
   --------------------------------------------------  
-  ADDS <adds> Device Addressing  
-  GLOB <type> Global Power ON / OFF Control  
-  POWER <type> Power ON / OFF / Query  
-  GSV <value> Global control O/P voltage setting  
-  GSI <value> Global control O/P current setting  
-  GRPWR 1 Global Power ON  
-  GRPWR 0 Global Power OFF  
-  SV <value> O/P Voltage Setting  
-  SI <value> O/P Current Setting  
-  SV? Voltage setting Query  
-  SI? Current setting Query  
-  RV? O/P Voltage Query  
-  RI? O/P Current Query  
-  RT? Temperature Query  
-  REMS <type> Remote ON / OFF / Query  
-  STUS <type> Device Status Query  
-  INFO <type> Information Query  
-  RATE? Rate V/I Query  
-  DEVI? Device Name Query  
-  IDN? Identification Query  
+| Command | Description                            | Notes | Implimented |
+|---------|----------------------------------------|-------|-------------|
+| ADDS    | ADDS Device Addressing                 |       |             |
+| GLOB    | GLOB Global Power ON / OFF Control     |       |             |
+| POWER   | POWER Power ON / OFF / Query           |       |             |
+| GSV     | GSV Global control O/P voltage setting |       |             |
+| GSI     | GSI Global control O/P current setting |       |             |
+| GRPWR   | GRPWR 1 Global Power ON                |       |             |
+| GRPWR   | GRPWR 0 Global Power OFF               |       |             |
+| SV      | SV O/P Voltage Setting                 |       | - [ ]       |
+| SI      | SI O/P Current Setting                 |       | - [ ]       |
+| SV?     | SV? Voltage setting Query              |       | - [ ]       |
+| SI?     | SI? Current setting Query              |       | - [ ]       |
+| RV?     | RV? O/P Voltage Query                  |       | - [ ]       |
+| RI?     | RI? O/P Current Query                  |       | - [ ]       |
+| RT?     | RT? Temperature Query                  |       | - [ ]       |
+| REMS    | REMS Remote ON / OFF / Query           |       |             |
+| STUS    | STUS Device Status Query               |       |             |
+| INFO    | INFO Information Query                 |       |             |
+| RATE?   | RATE? Rate V/I Query                   |       |             |
+| DEVI?   | DEVI? Device Name Query                |       |             |
+| *IDN?   | *IDN? Identification Query             |       | - [ ]       |
+|         |                                        |       |             |
 
 
 ## Wokwi Simulation
