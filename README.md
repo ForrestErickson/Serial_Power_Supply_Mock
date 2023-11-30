@@ -34,7 +34,7 @@ _Lifted from the HPSAE document_
   INFO <type> Information Query  
   RATE? Rate V/I Query  
   DEVI? Device Name Query  
-  IDN? Identification Query  
+  *IDN? Identification Query  
 
 
 ## Wokwi Simulation
