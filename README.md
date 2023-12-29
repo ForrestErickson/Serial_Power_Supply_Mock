@@ -3,11 +3,12 @@ Simulates a Power Solutions TF800 or Helios HPSAE programable power supply
 
 ## Hardware
 Runs on ESP32 S2
-The interface is a serial port UART different from the ESP32 prgraming UART.  The programing UART allows for monitoring the mock power supply and changing its opperation including asserting faults.
+The Serial_Power_Supply_Mock interface is a serial port UART1 different from the ESP32 prgraming UART0.  The programing UART0 allows for monitoring the mock power supply and changing its opperation including asserting faults.
 
 
 ## The motivation 
-To have an inexpensive ESP32 mock an expensive (about $500) power supply for development of firmware in another product where the actual power supply is not needed by every developer but the system under development and test would throw errors if the power suppy is not responding to serial commands.
+To have an inexpensive ESP32 mock an expensive (about $500) power supply for development of firmware in another product where the actual power supply is not needed by every developer but the system under development (with a TF800 or Helios HPSAE) and under test which could simulate normal behavior and abnormal behavior such as throw errors if the power suppy is not responding to serial commands, will help make the testing of the device which controls the serial supply more through.
+
 To have a mock supply where a tester can simulate faults such as the fan failing and capture results of the system under test to a power supply fan failure.
 
 ## Target Commands
