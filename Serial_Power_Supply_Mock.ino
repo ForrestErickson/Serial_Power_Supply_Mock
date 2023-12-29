@@ -203,12 +203,16 @@ void loop() {
   // Check for incoming commands from TF800
   if (Serial.available()) {
     String command = Serial.readStringUntil('\r\n');
-
-    //    Serial.print("Received command: ");
-    //    Serial.println(command);
-
     handleCommand(command);
   }
+
+
+  if (SerialTF8001.available()) {
+    String UART1command = SerialTF8001.readStringUntil('\r\n');
+    Serial.println("Got command on UART1");
+    handleCommand(UART1command);
+  }
+
 
   led1.Update();
   led2.Update();
