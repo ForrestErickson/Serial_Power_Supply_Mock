@@ -17,7 +17,7 @@ _Lifted from the HPSAE document_
   --------------------------------------------------  
 | Command | Description                        | Notes | Implimented |
 |---------|------------------------------------|-------|-------------|
-| ADDS    | Device Addressing                  |       |             |
+| ADDS    | Device Addressing                  |       | - [X]       |
 | GLOB    | Global Power ON / OFF Control      |       |             |
 | POWER   | Power ON / OFF / Query             |       |             |
 | GSV     | Global control O/P voltage setting |       |             |
@@ -26,17 +26,17 @@ _Lifted from the HPSAE document_
 | GRPWR   | GRPWR 0 Global Power OFF           |       |             |
 | SV nn.n | O/P Voltage Setting in Volts       |       | - [ ]       |
 | SI nn.n | O/P Current Setting in Amps        |       | - [ ]       |
-| SV?     | Voltage setting Query              |       | - [ ]       |
+| SV?     | Voltage setting Query              |       | - [X]       |
 | SI?     | Current setting Query              |       | - [ ]       |
 | RV?     | O/P Voltage Query                  |       | - [ ]       |
 | RI?     | O/P Current Query                  |       | - [ ]       |
 | RT?     | Temperature Query                  |       | - [ ]       |
 | REMS    | Remote ON / OFF / Query            |       |             |
 | STUS    | Device Status Query                |       |             |
-| INFO    | Information Query                  |       |             |
+| INFO    | Information Query                  |       | - [X]       |
 | RATE?   | Rate V/I Query                     |       |             |
 | DEVI?   | Device Name Query                  |       |             |
-| *IDN?   | Identification Query               |       | - [ ]       |
+| *IDN?   | Identification Query               |       | - [X]       |
 |         |                                    |       |             |
 
 
