@@ -67,11 +67,12 @@ enum infoType { Manufacture, Model,  Output_Voltage, Revision,  Date_of_MFG,  Se
 
 
 #define COMPANY_NAME "pubinv.org "
-#define PROG_NAME "Serial_Power_Supply_Mock"
-#define VERSION ":V0.3"
+#define PROG_NAME "Serial_Power_Supply_Mock "
+#define VERSION "V0.3 "
 #define DEVICE_UNDER_TEST "ESP32 S2:_"  //A model number
 #define LICENSE "GNU Affero General Public License, version 3 "
 #define ORIGIN "USA"
+#define Chip_ID 6259696
 
 
 #include <HardwareSerial.h>
@@ -209,7 +210,8 @@ void loop() {
 
   if (SerialTF8001.available()) {
     String UART1command = SerialTF8001.readStringUntil('\r\n');
-    Serial.println("Got command on UART1");
+    Serial.print("Got command on UART1: ");
+    Serial.println(UART1command);
     handleCommand(UART1command);
   }
 

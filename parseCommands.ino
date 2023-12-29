@@ -12,7 +12,8 @@ void handleCommand(String command) {
 
   // Example: If the command is "*IDN?", respond with instrument identification
   if (trimmedUpperCommand == "*IDN?") {
-    response = "TF800,Manufacturer,Model,Version,SerialNumber";
+//    response = "Manufacturer,Model,Version,SerialNumber";
+    response = String(COMPANY_NAME) + String(PROG_NAME) + String(VERSION) + String(Chip_ID);
     //   Serial.println(response);
   }
 
@@ -45,37 +46,45 @@ void handleCommand(String command) {
       case Manufacture:
         Serial.print("Manufacture: ");
         Serial.println(COMPANY_NAME);
+        response = COMPANY_NAME;
         break;
       case Model:
         Serial.print("Model: ");
         Serial.println(DEVICE_UNDER_TEST);
+        response = DEVICE_UNDER_TEST;
         break;
       case Output_Voltage:
         Serial.print("Output_Voltage: ");
         Serial.println(g_voltageSetting);
+        response = g_voltageSetting;
         break;
       case Revision:
         Serial.print("Revision");
         Serial.println(VERSION);
+        response = VERSION;
         break;
 
       case Date_of_MFG:
         Serial.print("Date_of_MFG: ");
         Serial.println(F(__DATE__ " " __TIME__));
+        response = F(__DATE__ " " __TIME__);
         break;
 
       case Serial_Number:
         Serial.print("Serial_Number: ");
         Serial.println("Serial_Number");
+        response = "Serial_Number";
         break;
 
       case Country_of_MFG:
         Serial.print("ORIGIN: ");
         Serial.println(ORIGIN);
+        response = ORIGIN;
         break;
 
       default:
         Serial.println("INFO type unknown");
+        // response = "INFO type unknown";  //Suppress response on error
     }// end of switch
   }//end  if starts with "INFO "
 
