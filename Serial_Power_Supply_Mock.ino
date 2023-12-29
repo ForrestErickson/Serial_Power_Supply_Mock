@@ -66,7 +66,7 @@
 
 #define COMPANY_NAME "pubinv.org "
 #define PROG_NAME "Serial_Power_Supply_Mock"
-#define VERSION ":V0.2"
+#define VERSION ":V0.3"
 #define DEVICE_UNDER_TEST "ESP32 S2:_"  //A model number
 #define LICENSE "GNU Affero General Public License, version 3 "
 
@@ -75,16 +75,15 @@
 //#include "driver/temp_sensor.h"
 //#include <temp_sensor.h>
 
-#define BAUD_RATE 115200 // For Wokwi.  For deployment use the rate of a real power supply
+#define BAUD_RATE 115200 // For ESP32 Debug serial.  
 //#define BAUD_RATE 9600 // For Wokwi.  For deployment use the rate of a real power supply
-#define BAUD_RATE_PS1 4800
+#define BAUD_RATE_PS1 4800 // Required for Power Supply interface.
 #define BAUD_RATE_PS2 4800
 
 
-// UART0  For communication and control of the MOCK supply
+// UART0  For debug communication and Terminal control of the MOCK supply
 #define RX_PIN RX
 #define TX_PIN TX
-HardwareSerial SerialTF800(0);
 
 // Define UART1 pins  for the eventual MOCK interface to a system which thinks this is a power supply
 #define UART1_RX_PIN 16
@@ -102,11 +101,23 @@ int DAC1_Value = 0; //Initial value of DAC1
 
 //response = "TF800,Manufacturer,Model,Version,SerialNumber";
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+uint8_t temprature_sens_read();
+#ifdef __cplusplus
+}
+#endif
+uint8_t temprature_sens_read();
+
 void initTempSensor() {
   //  temp_sensor_config_t temp_sensor = TSENS_CONFIG_DEFAULT();
   //  temp_sensor.dac_offset = TSENS_DAC_L2;  // TSENS_DAC_L2 is default; L4(-40°C ~ 20°C), L2(-10°C ~ 80°C), L1(20°C ~ 100°C), L0(50°C ~ 125°C)
   //  temp_sensor_set_config(temp_sensor);
   //  temp_sensor_start();
+
+  Serial.print((temprature_sens_read() - 32) / 1.8);
+  Serial.println(" C");
 
 }
 
@@ -172,8 +183,9 @@ void setup() {
   Serial.print("Compiled at: ");
   Serial.println(F(__DATE__ " " __TIME__) ); //compile date that is used for a unique identifier
 
+
+  initTempSensor();           //Just to have something to return as the power supply temprature.
   
-  //  initTempSensor();                       //Just to have something to return as the power supply temprature.
   SerialTF8001.begin(BAUD_RATE_PS1, SERIAL_8N1, UART1_RX_PIN, UART1_TX_PIN); //UART1_RX_PIN
   Serial.println("End setup.");
 }
@@ -183,8 +195,8 @@ void loop() {
   if (Serial.available()) {
     String command = Serial.readStringUntil('\r\n');
 
-//    Serial.print("Received command: ");
-//    Serial.println(command);
+    //    Serial.print("Received command: ");
+    //    Serial.println(command);
 
     handleCommand(command);
   }
