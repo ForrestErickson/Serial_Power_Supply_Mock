@@ -53,7 +53,7 @@ void handleCommand(String command) {
   // Read Temperature", respond with a temperature value
   else if (trimmedUpperCommand == "RT?") {
     float result = 0;
-    temp_sensor_read_celsius(&result);
+//    temp_sensor_read_celsius(&result);
     response = "TEMPERATURE:" + String(result, 3) + "C";
   }
 

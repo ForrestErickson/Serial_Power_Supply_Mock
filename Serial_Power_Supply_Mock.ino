@@ -1,14 +1,14 @@
 /*  Program: Serial_Power_Supply_Mock
- *   By: Forrest Lee Erickson
- *   Date: 20231129
- *   License
+     By: Forrest Lee Erickson
+     Date: 20231129
+     License
   In general we intend to follow the [Public Invention Licensed Guidelines](https://github.com/PubInv/PubInv-License-Guidelines)
   If you are starting your own project, please feel free to fork the license guidelines as a starting point if you like our license policy.
   This program includes free software: you can redistribute it and/or modify it under the terms of the GNU Affero General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
   See the GNU Affero General Public License for more details. You should have received a copy of the GNU Affero General Public License along with this program. If not, see <https://www.gnu.org/licenses/>.
   This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
- * Notes on simulation
+   Notes on simulation
 
   https://wokwi.com/projects/382758334051087361
   Simulates a Power Solutions TF800 or Helios HPSAE programable power supply
@@ -62,10 +62,23 @@
 
 */
 
-#include <HardwareSerial.h>
-#include "driver/temp_sensor.h"
 
-#define BAUD_RATE 9600 // For Wokwi.  For deployment use the rate of a real power supply
+#define COMPANY_NAME "pubinv.org "
+#define PROG_NAME "Serial_Power_Supply_Mock"
+#define VERSION ":V0.1"
+#define DEVICE_UNDER_TEST "ESP32 S2:_"  //A model number
+#define LICENSE "GNU Affero General Public License, version 3 "
+
+
+#include <HardwareSerial.h>
+//#include "driver/temp_sensor.h"
+//#include <temp_sensor.h>
+
+#define BAUD_RATE 115200 // For Wokwi.  For deployment use the rate of a real power supply
+//#define BAUD_RATE 9600 // For Wokwi.  For deployment use the rate of a real power supply
+#define BAUD_RATE_PS1 4800
+#define BAUD_RATE_PS2 4800
+
 
 // UART0  For communication and control of the MOCK supply
 #define RX_PIN RX
@@ -73,8 +86,8 @@
 HardwareSerial SerialTF800(0);
 
 // Define UART1 pins  for the eventual MOCK interface to a system which thinks this is a power supply
-//#define RX_PIN 16
-//#define TX_PIN 17
+#define UART1_RX_PIN 16
+#define UART1_TX_PIN 17
 //HardwareSerial SerialTF800(1);
 
 // Globals for the state
@@ -89,10 +102,11 @@ int DAC1_Value = 0; //Initial value of DAC1
 //response = "TF800,Manufacturer,Model,Version,SerialNumber";
 
 void initTempSensor() {
-  temp_sensor_config_t temp_sensor = TSENS_CONFIG_DEFAULT();
-  temp_sensor.dac_offset = TSENS_DAC_L2;  // TSENS_DAC_L2 is default; L4(-40°C ~ 20°C), L2(-10°C ~ 80°C), L1(20°C ~ 100°C), L0(50°C ~ 125°C)
-  temp_sensor_set_config(temp_sensor);
-  temp_sensor_start();
+  //  temp_sensor_config_t temp_sensor = TSENS_CONFIG_DEFAULT();
+  //  temp_sensor.dac_offset = TSENS_DAC_L2;  // TSENS_DAC_L2 is default; L4(-40°C ~ 20°C), L2(-10°C ~ 80°C), L1(20°C ~ 100°C), L0(50°C ~ 125°C)
+  //  temp_sensor_set_config(temp_sensor);
+  //  temp_sensor_start();
+
 }
 
 //Use some flashing LEDs so we can see the main loop is running.
@@ -147,9 +161,18 @@ Flasher led1(2, 100, 400);      //Pins for ESP32
 Flasher led2(3, 350, 350);
 
 void setup() {
-  initTempSensor();                       //Just to have something to return as the power supply temprature.
+  //Splash
   Serial.begin(BAUD_RATE);
-  SerialTF800.begin(BAUD_RATE, SERIAL_8N1, RX_PIN, TX_PIN);
+  //  SerialTF800.begin(BAUD_RATE, SERIAL_8N1, RX_PIN, TX_PIN);
+  while (!Serial);
+  Serial.print(DEVICE_UNDER_TEST);
+  Serial.print(PROG_NAME);
+  Serial.println(VERSION);
+  Serial.print("Compiled at: ");
+  Serial.println(F(__DATE__ " " __TIME__) ); //compile date that is used for a unique identifier
+
+  //  initTempSensor();                       //Just to have something to return as the power supply temprature.
+  //  SerialTF800.begin(BAUD_RATE, SERIAL_8N1, RX_PIN, TX_PIN);
   Serial.println("End setup.");
 }
 
