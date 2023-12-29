@@ -1,5 +1,8 @@
 // Process the received command and generate a response
 void handleCommand(String command) {
+//  Serial.print("Received command: ");
+//  Serial.println(command);
+
   // Convert the command to uppercase and trim
   String trimmedUpperCommand = command;
   trimmedUpperCommand.trim();
@@ -10,6 +13,7 @@ void handleCommand(String command) {
   // Example: If the command is "*IDN?", respond with instrument identification
   if (trimmedUpperCommand == "*IDN?") {
     response = "TF800,Manufacturer,Model,Version,SerialNumber";
+ //   Serial.println(response);
   }
 
   // Set Voltage, respond with an acknowledgment
@@ -53,7 +57,7 @@ void handleCommand(String command) {
   // Read Temperature", respond with a temperature value
   else if (trimmedUpperCommand == "RT?") {
     float result = 0;
-//    temp_sensor_read_celsius(&result);
+    //    temp_sensor_read_celsius(&result);
     response = "TEMPERATURE:" + String(result, 3) + "C";
   }
 
@@ -63,6 +67,8 @@ void handleCommand(String command) {
   }
 
   // Send the response back to TF800
-  SerialTF800.println(response);
+  Serial.println(response);
+  SerialTF8001.println(response);
+  
 }
 // end handleCommand()

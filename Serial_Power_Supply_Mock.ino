@@ -59,13 +59,14 @@
   RI?
   RT?
 
-
+  Version 0.2 on 20231228
+  Compile as ESP Dev Module.
 */
 
 
 #define COMPANY_NAME "pubinv.org "
 #define PROG_NAME "Serial_Power_Supply_Mock"
-#define VERSION ":V0.1"
+#define VERSION ":V0.2"
 #define DEVICE_UNDER_TEST "ESP32 S2:_"  //A model number
 #define LICENSE "GNU Affero General Public License, version 3 "
 
@@ -88,7 +89,7 @@ HardwareSerial SerialTF800(0);
 // Define UART1 pins  for the eventual MOCK interface to a system which thinks this is a power supply
 #define UART1_RX_PIN 16
 #define UART1_TX_PIN 17
-//HardwareSerial SerialTF800(1);
+HardwareSerial SerialTF8001(1);
 
 // Globals for the state
 float g_voltageSetting = 0.0;
@@ -163,26 +164,27 @@ Flasher led2(3, 350, 350);
 void setup() {
   //Splash
   Serial.begin(BAUD_RATE);
-  //  SerialTF800.begin(BAUD_RATE, SERIAL_8N1, RX_PIN, TX_PIN);
   while (!Serial);
+  Serial.println("===================================");
   Serial.print(DEVICE_UNDER_TEST);
   Serial.print(PROG_NAME);
   Serial.println(VERSION);
   Serial.print("Compiled at: ");
   Serial.println(F(__DATE__ " " __TIME__) ); //compile date that is used for a unique identifier
 
+  
   //  initTempSensor();                       //Just to have something to return as the power supply temprature.
-  //  SerialTF800.begin(BAUD_RATE, SERIAL_8N1, RX_PIN, TX_PIN);
+  SerialTF8001.begin(BAUD_RATE_PS1, SERIAL_8N1, UART1_RX_PIN, UART1_TX_PIN); //UART1_RX_PIN
   Serial.println("End setup.");
 }
 
 void loop() {
   // Check for incoming commands from TF800
-  if (SerialTF800.available()) {
-    String command = SerialTF800.readStringUntil('\r\n');
+  if (Serial.available()) {
+    String command = Serial.readStringUntil('\r\n');
 
-    Serial.print("Received command: ");
-    Serial.println(command);
+//    Serial.print("Received command: ");
+//    Serial.println(command);
 
     handleCommand(command);
   }
