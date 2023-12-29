@@ -25,6 +25,40 @@ void handleCommand(String command) {
     response = "ACK_SET_VOLTAGE";
   }
 
+  //ADDS <adds> Device Addressing
+  /*
+    Syntax: ADDS <adds>
+    Parameter: 0 <= adds <= 7
+    Description: When device receives a command, even if the addressing flag is set to 1 or clear to 0, UART will
+    execute this command. Only if the addressing of device is the same with <adds>, UART will set the device
+    addressing flag to 1 and reply “ = > CR LF ” to express that the execution is completed. Otherwise, the
+    addressing of the device isn't the same with <adds>, UART will set the device addressing flag to 0, but will not
+    reply. If there are no devices exist, all device addressing flag will be clear to 0, and device will not reply.
+  */
+  // Check Address,
+  else if (trimmedUpperCommand.startsWith("ADDS ")) {
+    g_addressSetting = trimmedUpperCommand.substring(4);
+    float voltageValue = trimmedUpperCommand.substring(4).toFloat();
+    Serial.print("My g_addressSetting= ");
+    Serial.println(g_addressSetting);
+
+    //If the address received = ADDRESS_SET, set address flat to 1 and reply “ = > CR LF ”
+
+    if (g_addressSetting.toInt() == ADDRESS_SET) {
+      Serial.print("g_addressSetting= ADDRESS_SET = ");
+      Serial.println(response);
+      //Set UART will set the device addressing flag to 1
+      match_address_flag = true;
+      response = "=>";
+    }
+    else { //Did not match so no reply
+      Serial.print("g_addressSetting != ADDRESS_SET = ");
+      Serial.println(response);
+      //Clear the device addressing flag to 0
+      match_address_flag = false;
+      response = "";
+    }
+  }
   // Read Voltage
   else if (trimmedUpperCommand.startsWith("RV?")) {
     float currentValue = getCurrentValue(); // Replace with actual function
@@ -57,8 +91,8 @@ void handleCommand(String command) {
   // Read Temperature", respond with a temperature value of the uController
   else if (trimmedUpperCommand == "RT?") {
     float result = 0;
-    result = float(temprature_sens_read());    
-    result = ((result - 32) / 1.8);  //Convert to C 
+    result = float(temprature_sens_read());
+    result = ((result - 32) / 1.8);  //Convert to C
     response = "TEMPERATURE:" + String(result, 0) + "C";
   }
 

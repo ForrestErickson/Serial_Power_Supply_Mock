@@ -90,9 +90,13 @@
 #define UART1_TX_PIN 17
 HardwareSerial SerialTF8001(1);
 
-// Globals for the state
+// Globals for the state of Power Supply
+#define ADDRESS_SET 0 //The factory setting.
 float g_voltageSetting = 0.0;
 float g_currentLimitSetting = 0.0;
+ bool match_address_flag = true; // Address flag is 1
+
+String g_addressSetting = "";
 
 //Define some hardware
 // dacWrite(DAC1, DAC1_Value);
