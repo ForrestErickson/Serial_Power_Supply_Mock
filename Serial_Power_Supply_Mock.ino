@@ -63,12 +63,15 @@
   Compile as ESP Dev Module.
 */
 
+enum infoType { Manufacture, Model,  Output_Voltage, Revision,  Date_of_MFG,  Serial_Number,  Country_of_MFG };
+
 
 #define COMPANY_NAME "pubinv.org "
 #define PROG_NAME "Serial_Power_Supply_Mock"
 #define VERSION ":V0.3"
 #define DEVICE_UNDER_TEST "ESP32 S2:_"  //A model number
 #define LICENSE "GNU Affero General Public License, version 3 "
+#define ORIGIN "USA"
 
 
 #include <HardwareSerial.h>
@@ -91,6 +94,8 @@
 HardwareSerial SerialTF8001(1);
 
 // Globals for the state of Power Supply
+
+
 #define ADDRESS_SET 0 //The factory setting.
 float g_voltageSetting = 0.0;
 float g_currentLimitSetting = 0.0;

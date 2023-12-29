@@ -16,6 +16,69 @@ void handleCommand(String command) {
     //   Serial.println(response);
   }
 
+  // Get INFO<type> , respond one of six types
+  /*Syntax: INFO <type>
+    Parameter: type = 0 to 6
+    Description: Query device information, device will transmit the related information.
+    <type> = 0 -> Manufacture
+    <type> = 1 -> Model Name
+    <type> = 2 -> Output Voltage
+    <type> = 3 -> Revision
+    <type> = 4 -> Date of MFG
+    <type> = 5 -> Serial Number
+    <type> = 6 -> Country of MFG
+
+    Use: toInt()
+
+  */
+
+
+  else if (trimmedUpperCommand.startsWith("INFO ")) {
+
+    //    int infoType =0;
+    int my_infoType = trimmedUpperCommand.substring(4).toInt();
+    Serial.println(my_infoType);
+    //response = "ACK_SET_VOLTAGE";
+    //Use a Switch CASE  on infoType
+    switch (my_infoType)
+    {
+      case Manufacture:
+        Serial.print("Manufacture: ");
+        Serial.println(COMPANY_NAME);
+        break;
+      case Model:
+        Serial.print("Model: ");
+        Serial.println(DEVICE_UNDER_TEST);
+        break;
+      case Output_Voltage:
+        Serial.print("Output_Voltage: ");
+        Serial.println(g_voltageSetting);
+        break;
+      case Revision:
+        Serial.print("Revision");
+        Serial.println(VERSION);
+        break;
+
+      case Date_of_MFG:
+        Serial.print("Date_of_MFG: ");
+        Serial.println(F(__DATE__ " " __TIME__));
+        break;
+
+      case Serial_Number:
+        Serial.print("Serial_Number: ");
+        Serial.println("Serial_Number");
+        break;
+
+      case Country_of_MFG:
+        Serial.print("ORIGIN: ");
+        Serial.println(ORIGIN);
+        break;
+
+      default:
+        Serial.println("INFO type unknown");
+    }// end of switch
+  }//end  if starts with "INFO "
+
   // Set Voltage, respond with an acknowledgment
   else if (trimmedUpperCommand.startsWith("SV ")) {
     float voltageValue = trimmedUpperCommand.substring(3).toFloat();
@@ -23,12 +86,12 @@ void handleCommand(String command) {
     g_voltageSetting = voltageValue;
     Serial.println(voltageValue);
     response = "ACK_SET_VOLTAGE";
-  }
+  }//end  if starts with "SV "
 
-  //ADDS <adds> Device Addressing
+  //ADDS <adds> Device Addressing.  Checks if ADDS is equal to the complie time set ADDRESS_SET (switch on the Supply).
   /*
     Syntax: ADDS <adds>
-    Parameter: 0 <= adds <= 7
+    TODO check:    Parameter: 0 <= adds <= 7
     Description: When device receives a command, even if the addressing flag is set to 1 or clear to 0, UART will
     execute this command. Only if the addressing of device is the same with <adds>, UART will set the device
     addressing flag to 1 and reply “ = > CR LF ” to express that the execution is completed. Otherwise, the
