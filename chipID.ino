@@ -8,8 +8,10 @@ uint32_t returnChipID(void) {
   }
 
   Serial.printf("ESP32 Chip model = %s Rev %d\n", ESP.getChipModel(), ESP.getChipRevision());
+  Serial.println();
   Serial.printf("This chip has %d cores\n", ESP.getChipCores());
-  Serial.print("Chip ID: "); Serial.println(chipId);
+  Serial.println();
+  Serial.print("Chip ID: "); Serial.println(chipId);  
 
 
 //  chipId =1; 
