@@ -71,6 +71,7 @@ void handleCommand(String command) {
   else if (trimmedUpperCommand.startsWith("GSV ")) {
     float globalVoltageValue = trimmedUpperCommand.substring(4).toFloat();
     // Process the global voltage setting (replace with actual logic)
+    //TODO input error checking and bound limits
     g_voltageSetting = globalVoltageValue;
     response = "=>";  // Simplified acknowledgment
   }
@@ -79,7 +80,9 @@ void handleCommand(String command) {
   else if (trimmedUpperCommand.startsWith("GSI ")) {
     float globalCurrentValue = trimmedUpperCommand.substring(4).toFloat();
     // Process the global current setting (replace with actual logic)
-    response = "=>";  // Simplified acknowledgment
+    //TODO input error checking and bound limits
+    g_currentLimitSetting = globalCurrentValue;
+    response = "";  // Simplified acknowledgment
   }
 
   // Global Power ON / OFF Control
@@ -142,6 +145,7 @@ void handleCommand(String command) {
     if (match_address_flag) {
       float voltageValue = trimmedUpperCommand.substring(3).toFloat();
       // Process the voltage setting (replace with actual logic)
+      //TODO input error checking and bound limits
       g_voltageSetting = voltageValue;
       response = "=>";  // Simplified acknowledgment
     }
@@ -151,10 +155,7 @@ void handleCommand(String command) {
   else if (trimmedUpperCommand == "SV?") {
     if (match_address_flag) {
       // Process the voltage setting query (replace with actual logic)
-      //TODO Error checking
-      float voltageValue = g_voltageSetting;  // Replace with actual voltage value
-//      response = "VOLTAGE:" + String(voltageValue, 3) + "V";
-      response = String(voltageValue, 3) ;
+      response = String(g_voltageSetting , 2) + "V";
     }
   }
 
@@ -162,7 +163,7 @@ void handleCommand(String command) {
   else if (trimmedUpperCommand.startsWith("RV?")) {
     if (match_address_flag) {
       float currentValue = getCurrentValue(); // Replace with actual function
-      response = "VOLTAGE:" + String(currentValue, 3) + "V";
+      response = String(currentValue, 2) + "V";
     }
   }
 
@@ -171,8 +172,9 @@ void handleCommand(String command) {
     if (match_address_flag) {
       float currentValue = trimmedUpperCommand.substring(3).toFloat();
       // Process the current setting (replace with actual logic)
+      //TODO input error checking and bound limits
       g_currentLimitSetting = currentValue;
-      response = "ACK_SET_CURRENT";
+      response = "";
     }
   }
 
@@ -181,7 +183,8 @@ void handleCommand(String command) {
     if (match_address_flag) {
       // Process the current setting (replace with actual logic)
       float currentValue = g_currentLimitSetting;
-      response = "ACK_GET_CURRENT_SET";
+      response = String(g_currentLimitSetting, 2) + "A";
+      //response = g_currentLimitSetting;
     }
   }
 
@@ -190,7 +193,7 @@ void handleCommand(String command) {
     if (match_address_flag) {
       float currentValue = getCurrentValue(); // Replace with actual function
       //      response = "CURRENT:" + String(currentValue, 3) + "A";
-      response = String(currentValue, 3);
+      response = String(currentValue, 2) + "A";
     }
   }
 
@@ -200,7 +203,7 @@ void handleCommand(String command) {
       float result = float(temprature_sens_read());
       result = ((result - 32) / 1.8);  // Convert to C
       //response = "TEMPERATURE:" + String(result, 0) + "C";
-      response = String(result, 0); // The SL Power only returned the digits of the temprature.
+      response = String(result, 0)+ "°C"; // The SL Power only returned the digits of the temprature.
     }
   }
 
@@ -216,7 +219,7 @@ void handleCommand(String command) {
       int powerType = trimmedUpperCommand.substring(6).toInt();
       // Process the power control (replace with actual logic)
       // Clear the OVP, OLP OTP FAN AUX Fail
-      int my_infoType = trimmedUpperCommand.substring(4).toInt();
+      Serial.print("Power type = "); Serial.println(powerType);
       switch (powerType) {
         case 0:
           g_power_ON = false;
@@ -227,48 +230,49 @@ void handleCommand(String command) {
           response = "";
           break;
         case 2:
-          response = g_power_ON;
+          if (g_power_ON) {
+            response = "3";
+          } else {
+            response = "2";
+          }
           break;
         default:
           // Do nothing for unknown INFO type
           response = "Bad Power Argument";
           break;
       }
-      response = "=>";  // Simplified acknowledgment
     }
 
     // Voltage setting Query for global control
     else if (trimmedUpperCommand == "GSV?") {
       // Process the global voltage setting query (replace with actual logic)
-      float globalVoltageValue = 0.0;  // Replace with actual global voltage value
-      response = "VOLTAGE:" + String(globalVoltageValue, 3) + "V";
+      response = String(g_voltageSetting, 2) + "V";
     }
 
     // Current setting Query for global control
     else if (trimmedUpperCommand == "GSI?") {
       // Process the global current setting query (replace with actual logic)
-      float globalCurrentValue = 0.0;  // Replace with actual global current value
-      response = "CURRENT:" + String(globalCurrentValue, 3) + "A";
+      response = String(g_currentLimitSetting, 2) + "A";
     }
 
     // Remote ON / OFF / Query
     else if (trimmedUpperCommand.startsWith("REMS ")) {
       int remoteType = trimmedUpperCommand.substring(5).toInt();
       // Process the remote control (replace with actual logic)
-      response = "=>";  // Simplified acknowledgment
+      response = "NOT Implemented";  // Simplified acknowledgment
     }
 
     // Device Status Query
     else if (trimmedUpperCommand.startsWith("STUS ")) {
       int statusType = trimmedUpperCommand.substring(5).toInt();
       // Process the status query (replace with actual logic)
-      response = "=>";  // Simplified acknowledgment
+      response = "NOT Implemented";  // Simplified acknowledgment
     }
 
     // Rate V/I Query
     else if (trimmedUpperCommand == "RATE?") {
       // Process the rate query (replace with actual logic)
-      response = "=>";  // Simplified acknowledgment
+      response = "NOT Implemented>";  // Simplified acknowledgment
     }
 
     // Device Name Query
@@ -290,4 +294,4 @@ void handleCommand(String command) {
     SerialTF8001.println(response);
     SerialTF8001.println("=>");  //This assumes all responses are valid.
   }
-}
+}//end handleCommand

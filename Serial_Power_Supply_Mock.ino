@@ -13,7 +13,7 @@
   https://wokwi.com/projects/382758334051087361
   Simulates a Power Solutions TF800 or Helios HPSAE programable power supply
   Returns a result from "*IDN?"
-  The set "SET_VOLTAGE:" comand will set the DAC output on pin #define DAC1 25
+  The set "SET_VOLTAGE:" comand will set the DAC output on pin DAC_CH1 25
 
   Compile as ESP Dev Module.  PC Port 6.
 */
@@ -24,7 +24,7 @@ enum infoType { Manufacture, Model,  Output_Voltage, Revision,  Date_of_MFG,  Se
 
 #define COMPANY_NAME "pubinv.org "
 #define PROG_NAME "Serial_Power_Supply_Mock "
-#define VERSION "V0.6 "
+#define VERSION "V0.7 "
 #define DEVICE_UNDER_TEST "ESP32 S2:_"  //A model number
 #define LICENSE "GNU Affero General Public License, version 3 "
 #define ORIGIN "USA"
@@ -50,14 +50,11 @@ HardwareSerial SerialTF8001(1);
 
 // Globals for the state of Power Supply
 
-// Define DAC pins
-#define DAC_CH1 25
-#define DAC_CH2 26
 
 //The serial address setting.  TODO: Set address with a switch or an eprom setting.
 #define ADDRESS_SET 1 // Set different from the phicial TF800 at0. 
 
-bool g_power_ON = true;
+bool g_power_ON = false;  //Same as the TF800
 
 float g_voltageSetting = 0.0;
 float g_currentLimitSetting = 0.0;
@@ -66,9 +63,9 @@ bool match_address_flag = true; // Address flag is 1
 String g_parsedAddressSetting = "";
 
 //Define some hardware
-// dacWrite(DAC1, DAC1_Value);
-#define DAC1 25
-int DAC1_Value = 0; //Initial value of DAC1
+// Define DAC pins
+#define DAC_CH1 25
+#define DAC_CH2 26
 
 //response = "TF800,Manufacturer,Model,Version,SerialNumber";
 
