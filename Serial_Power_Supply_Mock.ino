@@ -57,7 +57,7 @@ HardwareSerial SerialTF8001(1);
 //The serial address setting.  TODO: Set address with a switch or an eprom setting.
 #define ADDRESS_SET 1 // Set different from the phicial TF800 at0. 
 
-bool g_power_ON = false;
+bool g_power_ON = true;
 
 float g_voltageSetting = 0.0;
 float g_currentLimitSetting = 0.0;
@@ -173,7 +173,6 @@ void loop() {
     handleCommand(command);
   }
 
-
   if (SerialTF8001.available()) {
     String UART1command = SerialTF8001.readStringUntil('\r\n');
     Serial.print("Got command on UART1: ");
@@ -183,10 +182,12 @@ void loop() {
 
 // Update globalVoltageValue 
 
+  long scale_Voltage_For_DAC = map(g_voltageSetting, 0, 3.3, 0, 255);
+  
   if (g_power_ON) {
     // do something simulateing power on
     // Use DAC_CH1 as our power supply output.
-    dacWrite(DAC_CH1, 255);
+    dacWrite(DAC_CH1, scale_Voltage_For_DAC);
   } else{
     // turn off someting simulating power 
     dacWrite(DAC_CH1, 0);

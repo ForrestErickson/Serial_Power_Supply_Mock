@@ -71,6 +71,7 @@ void handleCommand(String command) {
   else if (trimmedUpperCommand.startsWith("GSV ")) {
     float globalVoltageValue = trimmedUpperCommand.substring(4).toFloat();
     // Process the global voltage setting (replace with actual logic)
+    g_voltageSetting = globalVoltageValue;
     response = "=>";  // Simplified acknowledgment
   }
 
@@ -150,8 +151,10 @@ void handleCommand(String command) {
   else if (trimmedUpperCommand == "SV?") {
     if (match_address_flag) {
       // Process the voltage setting query (replace with actual logic)
+      //TODO Error checking
       float voltageValue = g_voltageSetting;  // Replace with actual voltage value
-      response = "VOLTAGE:" + String(voltageValue, 3) + "V";
+//      response = "VOLTAGE:" + String(voltageValue, 3) + "V";
+      response = String(voltageValue, 3) ;
     }
   }
 
@@ -186,7 +189,7 @@ void handleCommand(String command) {
   else if (trimmedUpperCommand == "RI?") {
     if (match_address_flag) {
       float currentValue = getCurrentValue(); // Replace with actual function
-//      response = "CURRENT:" + String(currentValue, 3) + "A";
+      //      response = "CURRENT:" + String(currentValue, 3) + "A";
       response = String(currentValue, 3);
     }
   }
@@ -208,10 +211,29 @@ void handleCommand(String command) {
       response = String(COMPANY_NAME) + String(PROG_NAME) + String(VERSION) + String(g_chip_Id);
     }
 
-    // Power ON / OFF / Query
+    // Power ON / OFF / Query  (POWER 0, POWER 1, POWER 2)
     else if (trimmedUpperCommand.startsWith("POWER ")) {
       int powerType = trimmedUpperCommand.substring(6).toInt();
       // Process the power control (replace with actual logic)
+      // Clear the OVP, OLP OTP FAN AUX Fail
+      int my_infoType = trimmedUpperCommand.substring(4).toInt();
+      switch (powerType) {
+        case 0:
+          g_power_ON = false;
+          response = "";
+          break;
+        case 1:
+          g_power_ON = true;
+          response = "";
+          break;
+        case 2:
+          response = g_power_ON;
+          break;
+        default:
+          // Do nothing for unknown INFO type
+          response = "Bad Power Argument";
+          break;
+      }
       response = "=>";  // Simplified acknowledgment
     }
 
