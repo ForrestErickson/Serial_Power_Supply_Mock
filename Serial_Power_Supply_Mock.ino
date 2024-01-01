@@ -15,60 +15,16 @@
   Returns a result from "*IDN?"
   The set "SET_VOLTAGE:" comand will set the DAC output on pin #define DAC1 25
 
+  Compile as ESP Dev Module.  PC Port 6.
 */
 
-/*
-   COMMAND DESCRIPTION from Communication protocol User's Manual
-  --------------------------------------------------
-  ADDS <adds> Device Addressing
-  GLOB <type> Global Power ON / OFF Control
-  POWER <type> Power ON / OFF / Query
-  GSV <value> Global control O/P voltage setting
-  GSI <value> Global control O/P current setting
-  GRPWR 1 Global Power ON
-  GRPWR 0 Global Power OFF
-  SV <value> O/P Voltage Setting
-  SI <value> O/P Current Setting
-  SV? Voltage setting Query
-  SI? Current setting Query
-  RV? O/P Voltage Query
-  RI? O/P Current Query
-  RT? Temperature Query
-  REMS <type> Remote ON / OFF / Query
-  STUS <type> Device Status Query
-  INFO <type> Information Query
-  RATE? Rate V/I Query
-  DEVI? Device Name Query
-  IDN? Identification Query
-
-
-  The strings of reply and the represented results are shown as below:
-  = > CR LF -> Command executed successfully.
-  ? > CR LF -> Command error, not accepted.
-  ! > CR LF -> Command correct but execution error (e.g. parameters out of range)
-
-  While addressing effective devices execute the command with query function, SMPS
-  will transmit the string of query result first, then use “CR LF” for termina
-
-  Test commands
-   IDN?
-  SV 6.5
-  RV?
-  SI 21.5
-  SI?
-  RI?
-  RT?
-
-  Version 0.2 on 20231228
-  Compile as ESP Dev Module.
-*/
 
 enum infoType { Manufacture, Model,  Output_Voltage, Revision,  Date_of_MFG,  Serial_Number,  Country_of_MFG };
 
 
 #define COMPANY_NAME "pubinv.org "
 #define PROG_NAME "Serial_Power_Supply_Mock "
-#define VERSION "V0.4 "
+#define VERSION "V0.5 "
 #define DEVICE_UNDER_TEST "ESP32 S2:_"  //A model number
 #define LICENSE "GNU Affero General Public License, version 3 "
 #define ORIGIN "USA"
@@ -79,7 +35,6 @@ enum infoType { Manufacture, Model,  Output_Voltage, Revision,  Date_of_MFG,  Se
 //#include <temp_sensor.h>
 
 #define BAUD_RATE 115200 // For ESP32 Debug serial.  
-//#define BAUD_RATE 9600 // For Wokwi.  For deployment use the rate of a real power supply
 #define BAUD_RATE_PS1 4800 // Required for Power Supply interface.
 #define BAUD_RATE_PS2 4800
 
@@ -95,13 +50,14 @@ HardwareSerial SerialTF8001(1);
 
 // Globals for the state of Power Supply
 
+//The serial address setting.  TODO: Set address with a switch or an eprom setting.
+#define ADDRESS_SET 1 // Set different from the phicial TF800 at0. 
 
-#define ADDRESS_SET 0 //The factory setting.
 float g_voltageSetting = 0.0;
 float g_currentLimitSetting = 0.0;
- bool match_address_flag = true; // Address flag is 1
+bool match_address_flag = true; // Address flag is 1
 
-String g_addressSetting = "";
+String g_parsedAddressSetting = "";
 
 //Define some hardware
 // dacWrite(DAC1, DAC1_Value);
@@ -199,7 +155,7 @@ void setup() {
 
 
   initTempSensor();           //Just to have something to return as the power supply temprature.
-  
+
   SerialTF8001.begin(BAUD_RATE_PS1, SERIAL_8N1, UART1_RX_PIN, UART1_TX_PIN); //UART1_RX_PIN
   Serial.println("End setup.");
 }

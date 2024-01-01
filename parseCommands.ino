@@ -1,3 +1,49 @@
+
+/*
+   COMMAND DESCRIPTION from TF800 Communication protocol User's Manual
+  --------------------------------------------------
+  ADDS <adds> Device Addressing
+  GLOB <type> Global Power ON / OFF Control
+  POWER <type> Power ON / OFF / Query
+  GSV <value> Global control O/P voltage setting
+  GSI <value> Global control O/P current setting
+  GRPWR 1 Global Power ON
+  GRPWR 0 Global Power OFF
+  SV <value> O/P Voltage Setting
+  SI <value> O/P Current Setting
+  SV? Voltage setting Query
+  SI? Current setting Query
+  RV? O/P Voltage Query
+  RI? O/P Current Query
+  RT? Temperature Query
+  REMS <type> Remote ON / OFF / Query
+  STUS <type> Device Status Query
+  INFO <type> Information Query
+  RATE? Rate V/I Query
+  DEVI? Device Name Query
+  IDN? Identification Query
+
+
+  The strings of reply and the represented results are shown as below:
+  = > CR LF -> Command executed successfully.
+  ? > CR LF -> Command error, not accepted.
+  ! > CR LF -> Command correct but execution error (e.g. parameters out of range)
+
+  While addressing effective devices execute the command with query function, SMPS
+  will transmit the string of query result first, then use “CR LF” for termina
+
+  Test commands
+   IDN?
+  SV 6.5
+  RV?
+  SI 21.5
+  SI?
+  RI?
+  RT?
+*/
+
+
+
 // Process the received command and generate a response
 void handleCommand(String command) {
   //  Serial.print("Received command: ");
@@ -12,7 +58,7 @@ void handleCommand(String command) {
 
   // Example: If the command is "*IDN?", respond with instrument identification
   if (trimmedUpperCommand == "*IDN?") {
-//    response = "Manufacturer,Model,Version,SerialNumber";
+    //    response = "Manufacturer,Model,Version,SerialNumber";
     response = String(COMPANY_NAME) + String(PROG_NAME) + String(VERSION) + String(g_chip_Id);
     //   Serial.println(response);
   }
@@ -93,9 +139,9 @@ void handleCommand(String command) {
     float voltageValue = trimmedUpperCommand.substring(3).toFloat();
     // Process the voltage setting (replace with actual logic)
     g_voltageSetting = voltageValue;
-    Serial.println(voltageValue);
-    response = "ACK_SET_VOLTAGE";
-  }//end  if starts with "SV "
+    response = "=>";  // Simplified acknowledgment
+  }
+  //end  if starts with "SV "
 
   //ADDS <adds> Device Addressing.  Checks if ADDS is equal to the complie time set ADDRESS_SET (switch on the Supply).
   /*
@@ -109,22 +155,22 @@ void handleCommand(String command) {
   */
   // Check Address,
   else if (trimmedUpperCommand.startsWith("ADDS ")) {
-    g_addressSetting = trimmedUpperCommand.substring(4);
+    g_parsedAddressSetting = trimmedUpperCommand.substring(4);
     float voltageValue = trimmedUpperCommand.substring(4).toFloat();
-    Serial.print("My g_addressSetting= ");
-    Serial.println(g_addressSetting);
+    Serial.print("My g_parsedAddressSetting= ");
+    Serial.println(g_parsedAddressSetting);
 
     //If the address received = ADDRESS_SET, set address flat to 1 and reply “ = > CR LF ”
 
-    if (g_addressSetting.toInt() == ADDRESS_SET) {
-      Serial.print("g_addressSetting= ADDRESS_SET = ");
+    if (g_parsedAddressSetting.toInt() == ADDRESS_SET) {
+      Serial.print("g_parsedAddressSetting= ADDRESS_SET = ");
       Serial.println(response);
       //Set UART will set the device addressing flag to 1
       match_address_flag = true;
       response = "=>";
     }
     else { //Did not match so no reply
-      Serial.print("g_addressSetting != ADDRESS_SET = ");
+      Serial.print("g_parsedAddressSetting != ADDRESS_SET = ");
       Serial.println(response);
       //Clear the device addressing flag to 0
       match_address_flag = false;
