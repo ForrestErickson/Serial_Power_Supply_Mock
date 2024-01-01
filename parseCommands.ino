@@ -56,13 +56,15 @@ void handleCommand(String command) {
   // Global Power ON.
   if (trimmedUpperCommand == "GRPWR 1") {
     // Process the command (replace with actual logic)
-    response = "=>";  // Simplified acknowledgment
+    g_power_ON = true;
+    response = "";  // Simplified acknowledgment
   }
 
   // Global Power OFF
   else if (trimmedUpperCommand == "GRPWR 0") {
     // Process the command (replace with actual logic)
-    response = "=>";  // Simplified acknowledgment
+    g_power_ON = false;
+    response = "";  // Simplified acknowledgment
   }
 
   // Global Control O/P Voltage Setting

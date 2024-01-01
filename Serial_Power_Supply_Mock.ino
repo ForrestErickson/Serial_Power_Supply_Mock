@@ -50,6 +50,10 @@ HardwareSerial SerialTF8001(1);
 
 // Globals for the state of Power Supply
 
+// Define DAC pins
+#define DAC_CH1 25
+#define DAC_CH2 26
+
 //The serial address setting.  TODO: Set address with a switch or an eprom setting.
 #define ADDRESS_SET 1 // Set different from the phicial TF800 at0. 
 
@@ -177,6 +181,16 @@ void loop() {
     handleCommand(UART1command);
   }
 
+// Update globalVoltageValue 
+
+  if (g_power_ON) {
+    // do something simulateing power on
+    // Use DAC_CH1 as our power supply output.
+    dacWrite(DAC_CH1, 255);
+  } else{
+    // turn off someting simulating power 
+    dacWrite(DAC_CH1, 0);
+  }
 
   led1.Update();
   led2.Update();
