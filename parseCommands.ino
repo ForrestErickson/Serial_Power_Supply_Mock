@@ -52,11 +52,21 @@ void handleCommand(String command) {
   // Declare the response variable
   String response;
 
-  // Example: If the command is "*IDN?", respond with instrument identification
-  if (trimmedUpperCommand == "*IDN?") {
-    response = String(COMPANY_NAME) + String(PROG_NAME) + String(VERSION) + String(g_chip_Id);
-  }
 
+  // Check Address,
+  if (trimmedUpperCommand.startsWith("ADDS ")) {
+    g_parsedAddressSetting = trimmedUpperCommand.substring(4);
+    if (g_parsedAddressSetting.toInt() == ADDRESS_SET) {
+      // Set UART will set the device addressing flag to 1
+      match_address_flag = true;
+      response = "=>";
+    }
+    else {
+      // Clear the device addressing flag to 0
+      match_address_flag = false;
+      // No response for incorrect address setting
+    }
+  }
   // Get INFO<type> , respond one of six types
   else if (trimmedUpperCommand.startsWith("INFO ")) {
     if (match_address_flag) {
@@ -105,21 +115,6 @@ void handleCommand(String command) {
     // Process the voltage setting query (replace with actual logic)
     float voltageValue = g_voltageSetting;  // Replace with actual voltage value
     response = "VOLTAGE:" + String(voltageValue, 3) + "V";
-  }
-
-  // Check Address,
-  else if (trimmedUpperCommand.startsWith("ADDS ")) {
-    g_parsedAddressSetting = trimmedUpperCommand.substring(4);
-    if (g_parsedAddressSetting.toInt() == ADDRESS_SET) {
-      // Set UART will set the device addressing flag to 1
-      match_address_flag = true;
-      response = "=>";
-    }
-    else {
-      // Clear the device addressing flag to 0
-      match_address_flag = false;
-      // No response for incorrect address setting
-    }
   }
 
   // Read Voltage
@@ -171,38 +166,6 @@ void handleCommand(String command) {
     // Example: If the command is "*IDN?", respond with instrument identification
     if (trimmedUpperCommand == "*IDN?") {
       response = String(COMPANY_NAME) + String(PROG_NAME) + String(VERSION) + String(g_chip_Id);
-    }
-
-    // Get INFO<type>, respond one of six types
-    else if (trimmedUpperCommand.startsWith("INFO ")) {
-      int my_infoType = trimmedUpperCommand.substring(4).toInt();
-      switch (my_infoType) {
-        case Manufacture:
-          response = COMPANY_NAME;
-          break;
-        case Model:
-          response = DEVICE_UNDER_TEST;
-          break;
-        case Output_Voltage:
-          response = g_voltageSetting;
-          break;
-        case Revision:
-          response = VERSION;
-          break;
-        case Date_of_MFG:
-          response = F(__DATE__ " " __TIME__);
-          break;
-        case Serial_Number:
-          response = "Serial_Number";
-          break;
-        case Country_of_MFG:
-          response = ORIGIN;
-          break;
-        default:
-          // No details yet implemented
-          response = "=> No details yet implemented for INFO type " + String(my_infoType);
-          break;
-      }
     }
 
     // Set Voltage, respond with an acknowledgment
@@ -325,9 +288,9 @@ void handleCommand(String command) {
     // Device Name Query
     else if (trimmedUpperCommand == "DEVI?") {
       // Process the device name query (replace with actual logic)
-      // The SL Power supply TF800 replied with Manufacturier and model number, 
+      // The SL Power supply TF800 replied with Manufacturier and model number,
       // for the mock supply model user PROG_NAME
-      response = String(COMPANY_NAME) + String(PROG_NAME);       
+      response = String(COMPANY_NAME) + String(PROG_NAME);
     }
 
     // Unknown command
