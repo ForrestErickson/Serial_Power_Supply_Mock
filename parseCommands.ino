@@ -316,18 +316,6 @@ void handleCommand(String command) {
       response = "=>";  // Simplified acknowledgment
     }
 
-    // Information Query
-    else if (trimmedUpperCommand.startsWith("INFO ")) {
-      int infoType = trimmedUpperCommand.substring(5).toInt();
-      switch (infoType) {
-        // ... (existing INFO cases)
-        default:
-          // No details yet implemented
-          response = "=> No details yet implemented for INFO type " + String(infoType);
-          break;
-      }
-    }
-
     // Rate V/I Query
     else if (trimmedUpperCommand == "RATE?") {
       // Process the rate query (replace with actual logic)
@@ -337,7 +325,9 @@ void handleCommand(String command) {
     // Device Name Query
     else if (trimmedUpperCommand == "DEVI?") {
       // Process the device name query (replace with actual logic)
-      response = "=>";  // Simplified acknowledgment
+      // The SL Power supply TF800 replied with Manufacturier and model number, 
+      // for the mock supply model user PROG_NAME
+      response = String(COMPANY_NAME) + String(PROG_NAME);       
     }
 
     // Unknown command
@@ -349,5 +339,6 @@ void handleCommand(String command) {
   if (!response.isEmpty()) {
     Serial.println(response);
     SerialTF8001.println(response);
+    SerialTF8001.println("=>");  //This assumes all responses are valid.
   }
 }

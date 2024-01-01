@@ -24,7 +24,7 @@ enum infoType { Manufacture, Model,  Output_Voltage, Revision,  Date_of_MFG,  Se
 
 #define COMPANY_NAME "pubinv.org "
 #define PROG_NAME "Serial_Power_Supply_Mock "
-#define VERSION "V0.5 "
+#define VERSION "V0.6 "
 #define DEVICE_UNDER_TEST "ESP32 S2:_"  //A model number
 #define LICENSE "GNU Affero General Public License, version 3 "
 #define ORIGIN "USA"
@@ -52,6 +52,8 @@ HardwareSerial SerialTF8001(1);
 
 //The serial address setting.  TODO: Set address with a switch or an eprom setting.
 #define ADDRESS_SET 1 // Set different from the phicial TF800 at0. 
+
+bool g_power_ON = false;
 
 float g_voltageSetting = 0.0;
 float g_currentLimitSetting = 0.0;
@@ -178,7 +180,7 @@ void loop() {
 
   led1.Update();
   led2.Update();
-}
+}//end loop()
 
 
 float getCurrentValue() {
