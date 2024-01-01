@@ -182,7 +182,7 @@ void loop() {
   led2.Update();
 }//end loop()
 
-
+// Simulate some values for the current till something to measure is developed.
 float getCurrentValue() {
   // Replace this function with your actual code to retrieve current value
   // For the sake of example, returning a random current value

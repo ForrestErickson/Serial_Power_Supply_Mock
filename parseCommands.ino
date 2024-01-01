@@ -52,8 +52,41 @@ void handleCommand(String command) {
   // Declare the response variable
   String response;
 
+  // Globals. No check for match_address_flag
+  // Global Power ON.
+  if (trimmedUpperCommand == "GRPWR 1") {
+    // Process the command (replace with actual logic)
+    response = "=>";  // Simplified acknowledgment
+  }
 
-  // Check Address,
+  // Global Power OFF
+  else if (trimmedUpperCommand == "GRPWR 0") {
+    // Process the command (replace with actual logic)
+    response = "=>";  // Simplified acknowledgment
+  }
+
+  // Global Control O/P Voltage Setting
+  else if (trimmedUpperCommand.startsWith("GSV ")) {
+    float globalVoltageValue = trimmedUpperCommand.substring(4).toFloat();
+    // Process the global voltage setting (replace with actual logic)
+    response = "=>";  // Simplified acknowledgment
+  }
+
+  // Global Control O/P Current Setting
+  else if (trimmedUpperCommand.startsWith("GSI ")) {
+    float globalCurrentValue = trimmedUpperCommand.substring(4).toFloat();
+    // Process the global current setting (replace with actual logic)
+    response = "=>";  // Simplified acknowledgment
+  }
+
+  // Global Power ON / OFF Control
+  else if (trimmedUpperCommand.startsWith("GLOB ")) {
+    int globType = trimmedUpperCommand.substring(5).toInt();
+    // Process the global power control (replace with actual logic)
+    response = "=>";  // Simplified acknowledgment
+  }
+
+  // Check Address and set flag,
   if (trimmedUpperCommand.startsWith("ADDS ")) {
     g_parsedAddressSetting = trimmedUpperCommand.substring(4);
     if (g_parsedAddressSetting.toInt() == ADDRESS_SET) {
@@ -67,6 +100,7 @@ void handleCommand(String command) {
       // No response for incorrect address setting
     }
   }
+  // Commands handled after this point are subject to the match_address_flag
   // Get INFO<type> , respond one of six types
   else if (trimmedUpperCommand.startsWith("INFO ")) {
     if (match_address_flag) {
@@ -119,7 +153,7 @@ void handleCommand(String command) {
     }
   }
 
-  // Read Voltage
+  // Read Actual Voltage
   else if (trimmedUpperCommand.startsWith("RV?")) {
     if (match_address_flag) {
       float currentValue = getCurrentValue(); // Replace with actual function
@@ -150,7 +184,8 @@ void handleCommand(String command) {
   else if (trimmedUpperCommand == "RI?") {
     if (match_address_flag) {
       float currentValue = getCurrentValue(); // Replace with actual function
-      response = "CURRENT:" + String(currentValue, 3) + "A";
+//      response = "CURRENT:" + String(currentValue, 3) + "A";
+      response = String(currentValue, 3);
     }
   }
 
@@ -159,7 +194,8 @@ void handleCommand(String command) {
     if (match_address_flag) {
       float result = float(temprature_sens_read());
       result = ((result - 32) / 1.8);  // Convert to C
-      response = "TEMPERATURE:" + String(result, 0) + "C";
+      //response = "TEMPERATURE:" + String(result, 0) + "C";
+      response = String(result, 0); // The SL Power only returned the digits of the temprature.
     }
   }
 
@@ -168,39 +204,6 @@ void handleCommand(String command) {
     // Example: If the command is "*IDN?", respond with instrument identification
     if (trimmedUpperCommand == "*IDN?") {
       response = String(COMPANY_NAME) + String(PROG_NAME) + String(VERSION) + String(g_chip_Id);
-    }
-
-     // Global Power ON
-    else if (trimmedUpperCommand == "GRPWR 1") {
-      // Process the command (replace with actual logic)
-      response = "=>";  // Simplified acknowledgment
-    }
-
-    // Global Power OFF
-    else if (trimmedUpperCommand == "GRPWR 0") {
-      // Process the command (replace with actual logic)
-      response = "=>";  // Simplified acknowledgment
-    }
-
-    // Global Control O/P Voltage Setting
-    else if (trimmedUpperCommand.startsWith("GSV ")) {
-      float globalVoltageValue = trimmedUpperCommand.substring(4).toFloat();
-      // Process the global voltage setting (replace with actual logic)
-      response = "=>";  // Simplified acknowledgment
-    }
-
-    // Global Control O/P Current Setting
-    else if (trimmedUpperCommand.startsWith("GSI ")) {
-      float globalCurrentValue = trimmedUpperCommand.substring(4).toFloat();
-      // Process the global current setting (replace with actual logic)
-      response = "=>";  // Simplified acknowledgment
-    }
-
-    // Global Power ON / OFF Control
-    else if (trimmedUpperCommand.startsWith("GLOB ")) {
-      int globType = trimmedUpperCommand.substring(5).toInt();
-      // Process the global power control (replace with actual logic)
-      response = "=>";  // Simplified acknowledgment
     }
 
     // Power ON / OFF / Query
