@@ -72,7 +72,6 @@ enum infoType { Manufacture, Model,  Output_Voltage, Revision,  Date_of_MFG,  Se
 #define DEVICE_UNDER_TEST "ESP32 S2:_"  //A model number
 #define LICENSE "GNU Affero General Public License, version 3 "
 #define ORIGIN "USA"
-#define Chip_ID 6259696
 
 
 #include <HardwareSerial.h>
@@ -182,6 +181,8 @@ class Flasher
 Flasher led1(2, 100, 400);      //Pins for ESP32
 Flasher led2(3, 350, 350);
 
+uint32_t g_chip_Id = 9999999;
+
 void setup() {
   //Splash
   Serial.begin(BAUD_RATE);
@@ -193,7 +194,8 @@ void setup() {
   Serial.print("Compiled at: ");
   Serial.println(F(__DATE__ " " __TIME__) ); //compile date that is used for a unique identifier
 
-  Serial.println(chipID());
+  Serial.println(returnChipID());
+  g_chip_Id = returnChipID();
 
 
   initTempSensor();           //Just to have something to return as the power supply temprature.

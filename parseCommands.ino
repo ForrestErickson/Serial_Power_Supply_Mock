@@ -13,7 +13,7 @@ void handleCommand(String command) {
   // Example: If the command is "*IDN?", respond with instrument identification
   if (trimmedUpperCommand == "*IDN?") {
 //    response = "Manufacturer,Model,Version,SerialNumber";
-    response = String(COMPANY_NAME) + String(PROG_NAME) + String(VERSION) + String(Chip_ID);
+    response = String(COMPANY_NAME) + String(PROG_NAME) + String(VERSION) + String(g_chip_Id);
     //   Serial.println(response);
   }
 

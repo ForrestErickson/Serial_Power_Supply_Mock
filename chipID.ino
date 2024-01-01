@@ -1,5 +1,5 @@
 
-uint32_t chipID(void) {
+uint32_t returnChipID(void) {
 
   uint32_t chipId = 0;
 
