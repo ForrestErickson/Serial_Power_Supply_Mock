@@ -68,7 +68,7 @@ enum infoType { Manufacture, Model,  Output_Voltage, Revision,  Date_of_MFG,  Se
 
 #define COMPANY_NAME "pubinv.org "
 #define PROG_NAME "Serial_Power_Supply_Mock "
-#define VERSION "V0.3 "
+#define VERSION "V0.4 "
 #define DEVICE_UNDER_TEST "ESP32 S2:_"  //A model number
 #define LICENSE "GNU Affero General Public License, version 3 "
 #define ORIGIN "USA"
@@ -192,6 +192,8 @@ void setup() {
   Serial.println(VERSION);
   Serial.print("Compiled at: ");
   Serial.println(F(__DATE__ " " __TIME__) ); //compile date that is used for a unique identifier
+
+  Serial.println(chipID());
 
 
   initTempSensor();           //Just to have something to return as the power supply temprature.
