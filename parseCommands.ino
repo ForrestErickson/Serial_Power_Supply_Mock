@@ -112,9 +112,11 @@ void handleCommand(String command) {
 
   // Read Voltage setting Query
   else if (trimmedUpperCommand == "SV?") {
-    // Process the voltage setting query (replace with actual logic)
-    float voltageValue = g_voltageSetting;  // Replace with actual voltage value
-    response = "VOLTAGE:" + String(voltageValue, 3) + "V";
+    if (match_address_flag) {
+      // Process the voltage setting query (replace with actual logic)
+      float voltageValue = g_voltageSetting;  // Replace with actual voltage value
+      response = "VOLTAGE:" + String(voltageValue, 3) + "V";
+    }
   }
 
   // Read Voltage
@@ -168,50 +170,7 @@ void handleCommand(String command) {
       response = String(COMPANY_NAME) + String(PROG_NAME) + String(VERSION) + String(g_chip_Id);
     }
 
-    // Set Voltage, respond with an acknowledgment
-    else if (trimmedUpperCommand.startsWith("SV ")) {
-      float voltageValue = trimmedUpperCommand.substring(3).toFloat();
-      // Process the voltage setting (replace with actual logic)
-      g_voltageSetting = voltageValue;
-      response = "=>";  // Simplified acknowledgment
-    }
-
-    // Read Voltage setting Query
-    else if (trimmedUpperCommand == "SV?") {
-      // Process the voltage setting query (replace with actual logic)
-      float voltageValue = g_voltageSetting;  // Replace with actual voltage value
-      response = "VOLTAGE:" + String(voltageValue, 3) + "V";
-    }
-
-    // Set Current, respond with an acknowledgment
-    else if (trimmedUpperCommand.startsWith("SI ")) {
-      float currentValue = trimmedUpperCommand.substring(3).toFloat();
-      // Process the current setting (replace with actual logic)
-      g_currentLimitSetting = currentValue;
-      response = "=>";  // Simplified acknowledgment
-    }
-
-    // Get Current set, respond with an acknowledgment
-    else if (trimmedUpperCommand.startsWith("SI?")) {
-      // Process the current setting (replace with actual logic)
-      float currentValue = g_currentLimitSetting;
-      response = "ACK_GET_CURRENT_SET";
-    }
-
-    // Read Current, respond with a current value
-    else if (trimmedUpperCommand == "RI?") {
-      float currentValue = getCurrentValue(); // Replace with actual function
-      response = "CURRENT:" + String(currentValue, 3) + "A";
-    }
-
-    // Read Temperature, respond with a temperature value
-    else if (trimmedUpperCommand == "RT?") {
-      float result = float(temprature_sens_read());
-      result = ((result - 32) / 1.8);  // Convert to C
-      response = "TEMPERATURE:" + String(result, 0) + "C";
-    }
-
-    // Global Power ON
+     // Global Power ON
     else if (trimmedUpperCommand == "GRPWR 1") {
       // Process the command (replace with actual logic)
       response = "=>";  // Simplified acknowledgment
