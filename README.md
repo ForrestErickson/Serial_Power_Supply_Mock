@@ -19,27 +19,28 @@ _Lifted from the HPSAE document_
 | Command | Description                        | Notes | Implimented |
 |---------|------------------------------------|-------|-------------|
 | ADDS    | Device Addressing                  |       | - [X]       |
-| GLOB    | Global Power ON / OFF Control      |       |             |
-| POWER   | Power ON / OFF / Query             |       |             |
-| GSV     | Global control O/P voltage setting |       |             |
-| GSI     | Global control O/P current setting |       |             |
-| GRPWR   | GRPWR 1 Global Power ON            |       |             |
-| GRPWR   | GRPWR 0 Global Power OFF           |       |             |
-| SV nn.n | O/P Voltage Setting in Volts       |       | - [ ]       |
-| SI nn.n | O/P Current Setting in Amps        |       | - [ ]       |
+| GLOB    | Global Power ON / OFF Control      |       | - [X]       |
+| POWER   | Power ON / OFF / Query             |       | - [X]       |
+| GSV     | Global control O/P voltage setting |       | - [X]       |
+| GSI     | Global control O/P current setting |       | - [X]       |
+| GRPWR   | GRPWR 1 Global Power ON            |       | - [X]       |
+| GRPWR   | GRPWR 0 Global Power OFF           |       | - [X]       |
+| SV nn.n | O/P Voltage Setting in Volts       |       | - [X]       |
+| SI nn.n | O/P Current Setting in Amps        |       | - [X]       |
 | SV?     | Voltage setting Query              |       | - [X]       |
-| SI?     | Current setting Query              |       | - [ ]       |
-| RV?     | O/P Voltage Query                  |       | - [ ]       |
-| RI?     | O/P Current Query                  |       | - [ ]       |
-| RT?     | Temperature Query                  |       | - [ ]       |
+| SI?     | Current setting Query              |       | - [X]       |
+| RV?     | O/P Voltage Query                  |       | - [X]       |
+| RI?     | O/P Current Query                  |       | - [X]       |
+| RT?     | Temperature Query                  |       | - [X]       |
 | REMS    | Remote ON / OFF / Query            |       |             |
 | STUS    | Device Status Query                |       |             |
 | INFO    | Information Query                  |       | - [X]       |
 | RATE?   | Rate V/I Query                     |       |             |
-| DEVI?   | Device Name Query                  |       |             |
+| DEVI?   | Device Name Query                  |       | - [X]       |
 | *IDN?   | Identification Query               |       | - [X]       |
 |         |                                    |       |             |
 
+To Do: (20240101) read FAN and other status.
 
 ## Wokwi Simulation
 https://wokwi.com/projects/382758334051087361
