@@ -1,4 +1,3 @@
-
 /*
    COMMAND DESCRIPTION from TF800 Communication protocol User's Manual
   --------------------------------------------------
@@ -42,7 +41,6 @@
   RT?
 */
 
-
 // Process the received command and generate a response
 void handleCommand(String command) {
   // Convert the command to uppercase and trim
@@ -54,14 +52,14 @@ void handleCommand(String command) {
 
   // Globals. No check for match_address_flag
   // Global Power ON.
-  if (trimmedUpperCommand == "GRPWR 1") {
+  if (String("GRPWR 1") == trimmedUpperCommand) {
     // Process the command (replace with actual logic)
     g_power_ON = true;
     response = "";  // Simplified acknowledgment
   }
 
   // Global Power OFF
-  else if (trimmedUpperCommand == "GRPWR 0") {
+  else if (String("GRPWR 0") == trimmedUpperCommand) {
     // Process the command (replace with actual logic)
     g_power_ON = false;
     response = "";  // Simplified acknowledgment
@@ -95,7 +93,7 @@ void handleCommand(String command) {
   // Check Address and set flag,
   if (trimmedUpperCommand.startsWith("ADDS ")) {
     g_parsedAddressSetting = trimmedUpperCommand.substring(4);
-    if (g_parsedAddressSetting.toInt() == ADDRESS_SET) {
+    if (ADDRESS_SET == g_parsedAddressSetting.toInt()) {
       // Set UART will set the device addressing flag to 1
       match_address_flag = true;
       response = "=>";
@@ -152,7 +150,7 @@ void handleCommand(String command) {
   }
 
   // Read Voltage setting Query
-  else if (trimmedUpperCommand == "SV?") {
+  else if (String("SV?") == trimmedUpperCommand) {
     if (match_address_flag) {
       // Process the voltage setting query (replace with actual logic)
       response = String(g_voltageSetting , 2) + "V";
@@ -160,7 +158,7 @@ void handleCommand(String command) {
   }
 
   // Read Actual Voltage
-  else if (trimmedUpperCommand.startsWith("RV?")) {
+  else if (String("RV?") == trimmedUpperCommand) {
     if (match_address_flag) {
       float currentValue = getCurrentValue(); // Replace with actual function
       response = String(currentValue, 2) + "V";
@@ -179,30 +177,27 @@ void handleCommand(String command) {
   }
 
   // Get Current set, respond with an acknowledgment if the address matches
-  else if (trimmedUpperCommand.startsWith("SI?")) {
+  else if (String("SI?") == trimmedUpperCommand) {
     if (match_address_flag) {
       // Process the current setting (replace with actual logic)
       float currentValue = g_currentLimitSetting;
-      response = String(g_currentLimitSetting, 2) + "A";
-      //response = g_currentLimitSetting;
+      response = String(g_currentLimitSetting, 2) + "A";      
     }
   }
 
   // Read Current, respond with a current value if the address matches
-  else if (trimmedUpperCommand == "RI?") {
+  else if (String("RI?") == trimmedUpperCommand) {
     if (match_address_flag) {
       float currentValue = getCurrentValue(); // Replace with actual function
-      //      response = "CURRENT:" + String(currentValue, 3) + "A";
       response = String(currentValue, 2) + "A";
     }
   }
 
   // Read Temperature, respond with a temperature value of the uController if the address matches
-  else if (trimmedUpperCommand == "RT?") {
+  else if (String("RT?") == trimmedUpperCommand) {
     if (match_address_flag) {
       float result = float(temprature_sens_read());
       result = ((result - 32) / 1.8);  // Convert to C
-      //response = "TEMPERATURE:" + String(result, 0) + "C";
       response = String(result, 0)+ "°C"; // The SL Power only returned the digits of the temprature.
     }
   }
@@ -210,7 +205,7 @@ void handleCommand(String command) {
   // Other commands requiring ADDS flag check
   else if (match_address_flag) {
     // Example: If the command is "*IDN?", respond with instrument identification
-    if (trimmedUpperCommand == "*IDN?") {
+    if (String("*IDN?") == trimmedUpperCommand) {
       response = String(COMPANY_NAME) + String(PROG_NAME) + String(VERSION) + String(g_chip_Id);
     }
 
@@ -244,13 +239,13 @@ void handleCommand(String command) {
     }
 
     // Voltage setting Query for global control
-    else if (trimmedUpperCommand == "GSV?") {
+    else if (String("GSV?") == trimmedUpperCommand) {
       // Process the global voltage setting query (replace with actual logic)
       response = String(g_voltageSetting, 2) + "V";
     }
 
     // Current setting Query for global control
-    else if (trimmedUpperCommand == "GSI?") {
+    else if (String("GSI?") == trimmedUpperCommand) {
       // Process the global current setting query (replace with actual logic)
       response = String(g_currentLimitSetting, 2) + "A";
     }
@@ -270,13 +265,13 @@ void handleCommand(String command) {
     }
 
     // Rate V/I Query
-    else if (trimmedUpperCommand == "RATE?") {
+    else if (String("RATE?") == trimmedUpperCommand) {
       // Process the rate query (replace with actual logic)
       response = "NOT Implemented>";  // Simplified acknowledgment
     }
 
     // Device Name Query
-    else if (trimmedUpperCommand == "DEVI?") {
+    else if (String("DEVI?") == trimmedUpperCommand) {
       // Process the device name query (replace with actual logic)
       // The SL Power supply TF800 replied with Manufacturier and model number,
       // for the mock supply model user PROG_NAME
